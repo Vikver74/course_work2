@@ -55,3 +55,19 @@ class PostsList:
             if post_counter >= 10: break
         return posts
 
+    def modify_content_with_tags(self, content_lst):
+        content_with_tags = ''
+        for word in content_lst:
+            if str(word).startswith('#'):
+                url_ = word[1:]
+                word = f'<a href="/tag/{url_}">{word}</a>'
+            content_with_tags += (' ' + word)
+        return content_with_tags.strip()
+
+    def search_for_tag(self, tagname, posts_list):
+        posts_with_tag = []
+        tagname = '#' + tagname
+        for post in posts_list:
+            if tagname.lower() in post['content'].lower():
+                posts_with_tag.append(post)
+        return posts_with_tag

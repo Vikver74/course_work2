@@ -33,6 +33,8 @@ def get_post_by_id(post_id):
     posts_list = PostsList()
     posts = posts_list.get_all_posts(marked_posts_list)
     post = posts_list.get_post_by_post_id(posts, post_id)
+    content_lst = post['content'].split(' ')
+    post['content'] = posts_list.modify_content_with_tags(content_lst)
     comment_list = CommentsList()
     try:
         comments = comment_list.get_comments_by_post_id(post_id)
@@ -49,14 +51,17 @@ def get_post_by_id(post_id):
 
 @post_blueprint.route('/search')
 def search_by_words():
-    """ посик постов по вхождению ключевого слово в текст поста"""
+    """ посик постов по вхождению ключевого слова в текст поста"""
     marked_list = MarkedPostsList()
     marked_posts_list = marked_list.get_all_markers()
     posts_list = PostsList()
     posts_with_mark = posts_list.get_all_posts(marked_posts_list)
     word = request.args.get('word')
     posts = posts_list.search_for_posts(word, posts_with_mark)
-    return render_template('search.html', posts=posts, post_count=len(posts))
+    if len(word.strip()) > 0:
+        return render_template('search.html', posts=posts, post_count=len(posts))
+    else:
+        return redirect('/', code=302)
 
 
 @post_blueprint.route('/users/<username>', methods=['get'])
@@ -104,6 +109,13 @@ def dell_post_from_marked(post_id):
 
 
 @post_blueprint.route('/tag/<tagname>')
-def search_by_hashtag():
+def search_by_hashtag(tagname):
     """ поиск постов по хэштэгу"""
-    pass
+    logger_app.debug(f' !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+    logger_app.debug(f'tagname     {tagname}')
+    marked_list = MarkedPostsList()
+    marked_posts_list = marked_list.get_all_markers()
+    posts_list = PostsList()
+    posts_with_tag = posts_list.get_all_posts(marked_posts_list)
+    posts = posts_list.search_for_tag(tagname, posts_with_tag)
+    return render_template('tag.html', posts=posts, tagname=tagname)
