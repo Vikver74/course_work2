@@ -6,6 +6,7 @@ from flask import render_template, request, redirect
 from logger import logger_app
 from json import JSONDecodeError
 
+
 post_blueprint = Blueprint('post_blueprint', __name__, template_folder='templates', static_folder='/app/posts/static')
 
 @post_blueprint.route('/')
@@ -51,7 +52,7 @@ def get_post_by_id(post_id):
 
 @post_blueprint.route('/search')
 def search_by_words():
-    """ посик постов по вхождению ключевого слова в текст поста"""
+    """ поиск постов по вхождению ключевого слова в текст поста"""
     marked_list = MarkedPostsList()
     marked_posts_list = marked_list.get_all_markers()
     posts_list = PostsList()
@@ -111,8 +112,6 @@ def dell_post_from_marked(post_id):
 @post_blueprint.route('/tag/<tagname>')
 def search_by_hashtag(tagname):
     """ поиск постов по хэштэгу"""
-    logger_app.debug(f' !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
-    logger_app.debug(f'tagname     {tagname}')
     marked_list = MarkedPostsList()
     marked_posts_list = marked_list.get_all_markers()
     posts_list = PostsList()

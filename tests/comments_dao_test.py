@@ -1,7 +1,4 @@
 import pytest
-from json import JSONDecodeError
-from config import PATH_TO_DATA, FILE_NAME_COMMENTS
-import os.path
 from dao.comments_dao import CommentsList
 
 class TestCommentsList:
@@ -24,12 +21,10 @@ class TestCommentsList:
         for comment in comments_list.get_all_comments():
             assert set(comment.keys()) == keys_expected, 'Неверный список ключей в файле с комментами'
 
-    # parameters_comments_pk = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
     parameters_post_id = [1, 2, 3, 4, 5, 6, 7, 8]
     @pytest.mark.parametrize('post_id', parameters_post_id)
     def test_get_comments_by_post_id(self, comments_list, keys_expected, post_id):
         """ проверка выбора коммента по id поста"""
-        # comment = comments_list.get_comments_by_post_id(post_id)
         comments = comments_list.get_comments_by_post_id(post_id)
         for comment in comments:
             assert comment['post_id'] == post_id, 'Неверное значение pk в комменте'

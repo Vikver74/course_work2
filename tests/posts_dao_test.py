@@ -1,7 +1,5 @@
 import pytest
 from json import JSONDecodeError
-from config import PATH_TO_DATA, FILE_NAME_DATA
-import os.path
 from dao.posts_dao import PostsList
 
 

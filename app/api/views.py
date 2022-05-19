@@ -1,9 +1,7 @@
 from flask import Blueprint
 from dao.posts_dao import PostsList
 from dao.comments_dao import CommentsList
-from flask import request, jsonify
-from logger import logger_app
-from json import JSONDecodeError
+from flask import jsonify
 
 api_blueprint = Blueprint('api_blueprint', __name__, template_folder='templates')
 
